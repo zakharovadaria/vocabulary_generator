@@ -11,7 +11,7 @@ with io.open("src/vocabulary_generator/__init__.py", "rt", encoding="utf8") as f
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
 setup(
-    name='Vocabulary Generator',
+    name='vocabulary_generator',
     version=version,
     project_urls={
         'Code': 'https://github.com/zakharovadaria/vocabulary_generator',
