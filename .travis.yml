@@ -1,8 +1,8 @@
 language: python
 install:
-  - pip install coveralls pytest-cov
+  - pip install coveralls pytest-cov nltk
   - pip install .
-before_install:
+before_script:
   - python -m nltk.downloader punkt
   - python -m nltk.downloader averaged_perceptron_tagger
   - python -m nltk.downloader wordnet
