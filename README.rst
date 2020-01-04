@@ -6,3 +6,6 @@ Vocabulary Generator
 
 .. image:: https://travis-ci.org/zakharovadaria/vocabulary_generator.svg?branch=master
     :target: https://travis-ci.org/zakharovadaria/vocabulary_generator
+
+.. image:: https://img.shields.io/badge/PyPi-v0.0.1-brightgreen
+    :target: https://pypi.org/project/vocabulary_generator/
