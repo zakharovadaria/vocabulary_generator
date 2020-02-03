@@ -1,4 +1,5 @@
-from typing import List, Set
+from collections import Counter
+from typing import List
 
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
@@ -13,12 +14,6 @@ def get_all_words_in_text(text: str) -> List[str]:
     words = text_without_spaces_around.lower().split(' ')
 
     return words
-
-
-def get_unique_words(words: List[str]) -> Set[str]:
-    unique_words = set(words)
-
-    return unique_words
 
 
 def get_initial_form(word: str) -> str:
@@ -40,25 +35,27 @@ def get_pos_tag(word: str) -> str:
     return tag_dict.get(tag, wordnet.NOUN)
 
 
-def get_all_words_in_initial_form(words: Set[str]) -> Set[str]:
-    initial_words = set()
+def get_words_in_initial_form(words: List[str]) -> List[str]:
+    initial_words = []
     for word in words:
         initial_word = get_initial_form(word)
-        initial_words.add(initial_word)
+        initial_words.append(initial_word)
 
     return initial_words
 
 
-def get_unique_words_in_initial_form(text: str) -> Set[str]:
+def get_words_frequency(words: List[str]) -> Counter:
+    return Counter(words)
+
+
+def get_unknown_words(text: str, known_words: List[str]) -> List[str]:
     words = get_all_words_in_text(text)
-    unique_words = get_unique_words(words)
-    words_in_initial_form = get_all_words_in_initial_form(unique_words)
+    words_in_initial_form = get_words_in_initial_form(words)
+    known_words_in_initial_form = get_words_in_initial_form(known_words)
+    unknown_words = []
 
-    return words_in_initial_form
-
-
-def get_unknown_words(text: str, known_words: Set[str]) -> Set[str]:
-    words_from_text = get_unique_words_in_initial_form(text)
-    unknown_words = words_from_text.difference(known_words)
+    for word in words_in_initial_form:
+        if word not in known_words_in_initial_form:
+            unknown_words.append(word)
 
     return unknown_words

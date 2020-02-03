@@ -1,140 +1,153 @@
-from vocabulary_generator.core import get_all_words_in_text, get_unique_words, get_initial_form
-from vocabulary_generator.core import get_all_words_in_initial_form, get_pos_tag, get_unique_words_in_initial_form
-from vocabulary_generator.core import get_unknown_words
+from vocabulary_generator.core import get_all_words_in_text, get_initial_form
+from vocabulary_generator.core import get_pos_tag, get_words_in_initial_form
+from vocabulary_generator.core import get_words_frequency, get_unknown_words
 
 
-def test_get_all_words_in_text():
-    text = 'Hello world'
-    actual = get_all_words_in_text(text)
-    expected = ['hello', 'world']
+class TestGetAllWords:
+    def test_get_all_words_in_text(self):
+        text = 'Hello world'
+        actual = get_all_words_in_text(text)
+        expected = ['hello', 'world']
 
-    assert actual == expected
+        assert actual == expected
 
+    def test_get_all_words_in_empty_text(self):
+        text = ''
+        actual = get_all_words_in_text(text)
+        expected = []
 
-def test_get_all_words_in_empty_text():
-    text = ''
-    actual = get_all_words_in_text(text)
-    expected = []
+        assert actual == expected
 
-    assert actual == expected
+    def test_get_all_words_in_text_with_spaces(self):
+        text = '  '
+        actual = get_all_words_in_text(text)
+        expected = []
 
-
-def test_get_all_words_in_text_with_spaces():
-    text = '  '
-    actual = get_all_words_in_text(text)
-    expected = []
-
-    assert actual == expected
-
-
-def test_get_unique_words_count():
-    words = ['first', 'second', 'third', 'fourth']
-    actual = len(get_unique_words(words))
-    expected = 4
-
-    assert actual == expected
+        assert actual == expected
 
 
-def test_get_unique_words_with_repeat_sequence_count():
-    words = ['first', 'second', 'first', 'second']
-    actual = len(get_unique_words(words))
-    expected = 2
+class TestInitialForm:
+    def test_get_initial_form_of_subject(self):
+        word = 'cats'
+        actual = get_initial_form(word)
+        expected = 'cat'
 
-    assert actual == expected
+        assert actual == expected
 
+    def test_get_initial_form_of_irregular_verb(self):
+        word = 'took'
+        actual = get_initial_form(word)
+        expected = 'take'
 
-def test_get_unique_words_with_empty_list():
-    words = []
-    actual = get_unique_words(words)
-    expected = set()
+        assert actual == expected
 
-    assert actual == expected
+    def test_get_initial_form_of_regular_verb(self):
+        word = 'tested'
+        actual = get_initial_form(word)
+        expected = 'test'
 
+        assert actual == expected
 
-def test_get_initial_form_of_subject():
-    word = 'cats'
-    actual = get_initial_form(word)
-    expected = 'cat'
+    def test_get_words_in_initial_form(self):
+        words = ['been', 'had', 'done', 'languages', 'cities', 'mice']
 
-    assert actual == expected
+        actual = get_words_in_initial_form(words)
+        expected = ['be', 'have', 'do', 'language', 'city', 'mouse']
 
-
-def test_get_initial_form_of_irregular_verb():
-    word = 'took'
-    actual = get_initial_form(word)
-    expected = 'take'
-
-    assert actual == expected
-
-
-def test_get_initial_form_of_regular_verb():
-    word = 'tested'
-    actual = get_initial_form(word)
-    expected = 'test'
-
-    assert actual == expected
+        assert actual == expected
 
 
-def test_get_pos_tag_adjective():
-    word = 'small'
+class TestPosTags:
+    def test_get_pos_tag_adjective(self):
+        word = 'small'
 
-    actual = get_pos_tag(word)
-    expected = 'a'
+        actual = get_pos_tag(word)
+        expected = 'a'
 
-    assert actual == expected
+        assert actual == expected
 
+    def test_get_pos_tag_noun(self):
+        word = 'languages'
 
-def test_get_pos_tag_noun():
-    word = 'languages'
+        actual = get_pos_tag(word)
+        expected = 'n'
 
-    actual = get_pos_tag(word)
-    expected = 'n'
+        assert actual == expected
 
-    assert actual == expected
+    def test_get_pos_tag_verb(self):
+        word = 'took'
 
+        actual = get_pos_tag(word)
+        expected = 'v'
 
-def test_get_pos_tag_verb():
-    word = 'took'
-
-    actual = get_pos_tag(word)
-    expected = 'v'
-
-    assert actual == expected
-
-
-def test_get_all_words_in_initial_form():
-    words = {'been', 'had', 'done', 'languages', 'cities', 'mice'}
-
-    actual = get_all_words_in_initial_form(words)
-    expected = {'be', 'have', 'do', 'language', 'city', 'mouse'}
-
-    assert actual == expected
+        assert actual == expected
 
 
-def test_get_unique_words_in_initial_form():
-    text = 'been had done languages cities mice been had done languages cities mice been had done languages cities mice'
+class TestCountWords:
+    def test_words_frequency(self):
+        words = ['been', 'had', 'been', 'had', 'be', 'was']
 
-    actual = get_unique_words_in_initial_form(text)
-    expected = {'be', 'have', 'do', 'language', 'city', 'mouse'}
+        actual = get_words_frequency(words)
+        expected = {
+            'been': 2,
+            'had': 2,
+            'be': 1,
+            'was': 1,
+        }
 
-    assert actual == expected
+        assert actual == expected
+
+    def test_frequency_of_empty_list(self):
+        words = []
+
+        actual = get_words_frequency(words)
+        expected = {}
+
+        assert actual == expected
 
 
-def test_get_unknown_words():
-    text = 'been had done languages cities mice feet took went'
-    known_words = {'be', 'do', 'take'}
+class TestUnknownWords:
+    def test_get_unknown_words(self):
+        text = 'been had done languages cities mice feet took went'
+        known_words = ['be', 'do', 'take']
 
-    actual = get_unknown_words(text, known_words)
-    expected = {'have', 'language', 'city', 'mouse', 'foot', 'go'}
+        actual = get_unknown_words(text, known_words)
+        expected = ['have', 'language', 'city', 'mouse', 'foot', 'go']
 
-    assert actual == expected
+        assert actual == expected
 
+    def test_get_unknown_words_with_not_unknown_words(self):
+        text = 'been done took'
+        known_words = ['be', 'do', 'take']
 
-def test_get_unknown_words_with_not_unknown_words():
-    text = 'been done took'
-    known_words = {'be', 'do', 'take'}
+        actual = get_unknown_words(text, known_words)
+        expected = []
 
-    actual = get_unknown_words(text, known_words)
-    expected = set()
+        assert actual == expected
 
-    assert actual == expected
+    def test_get_unknown_words_with_not_known_words(self):
+        text = 'been done took'
+        known_words = []
+
+        actual = get_unknown_words(text, known_words)
+        expected = ['be', 'do', 'take']
+
+        assert actual == expected
+
+    def test_get_unknown_words_with_frequency(self):
+        text = 'been done took been done took been done took been done'
+        known_words = []
+
+        actual = get_unknown_words(text, known_words)
+        expected = ['be', 'do', 'take', 'be', 'do', 'take', 'be', 'do', 'take', 'be', 'do']
+
+        assert actual == expected
+
+        actual = get_words_frequency(actual)
+        expected = {
+            'be': 4,
+            'do': 4,
+            'take': 3,
+        }
+
+        assert actual == expected
