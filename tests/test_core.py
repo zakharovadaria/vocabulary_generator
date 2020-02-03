@@ -85,14 +85,22 @@ class TestPosTags:
 
 class TestCountWords:
     def test_words_frequency(self):
-        words = ['been', 'had', 'been', 'had', 'be', 'was']
+        words = ['been', 'had', 'been', 'had', 'be', 'was', 'been']
 
         actual = get_words_frequency(words)
         expected = {
-            'been': 2,
+            'been': 3,
             'had': 2,
             'be': 1,
             'was': 1,
+        }
+
+        assert actual == expected
+
+        actual = get_words_frequency(words, most_common=2)
+        expected = {
+            'been': 3,
+            'had': 2,
         }
 
         assert actual == expected

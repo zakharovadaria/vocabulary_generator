@@ -44,8 +44,8 @@ def get_words_in_initial_form(words: List[str]) -> List[str]:
     return initial_words
 
 
-def get_words_frequency(words: List[str]) -> Counter:
-    return Counter(words)
+def get_words_frequency(words: List[str], *, most_common: int = None) -> dict:
+    return dict(Counter(words).most_common(most_common))
 
 
 def get_unknown_words(text: str, known_words: List[str]) -> List[str]:
