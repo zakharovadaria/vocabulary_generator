@@ -1,29 +1,60 @@
-from vocabulary_generator.core import get_all_words_in_text, get_initial_form
+from vocabulary_generator.core import get_words_in_text, get_initial_form
 from vocabulary_generator.core import get_pos_tag, get_words_in_initial_form
 from vocabulary_generator.core import get_words_frequency, get_unknown_words
+from vocabulary_generator.core import get_clear_text
 
 
-class TestGetAllWords:
-    def test_get_all_words_in_text(self):
+class TestGetWords:
+    def test_get_clear_text(self):
+        text = '  '
+
+        actual = get_clear_text(text)
+        expected = ''
+
+        assert actual == expected
+
+        text = ' Hello,   world! '
+
+        actual = get_clear_text(text)
+        expected = 'Hello world'
+
+        assert actual == expected
+
+    def test_get_words_in_text(self):
         text = 'Hello world'
-        actual = get_all_words_in_text(text)
+        actual = get_words_in_text(text)
         expected = ['hello', 'world']
 
         assert actual == expected
 
-    def test_get_all_words_in_empty_text(self):
+    def test_get_words_with_spaces_in_middle(self):
+        text = 'Hello    world'
+        actual = get_words_in_text(text)
+        expected = ['hello', 'world']
+
+        assert actual == expected
+
+    def test_get_words_in_empty_text(self):
         text = ''
-        actual = get_all_words_in_text(text)
+        actual = get_words_in_text(text)
         expected = []
 
         assert actual == expected
 
-    def test_get_all_words_in_text_with_spaces(self):
+    def test_get_words_in_text_with_spaces(self):
         text = '  '
-        actual = get_all_words_in_text(text)
+        actual = get_words_in_text(text)
         expected = []
 
         assert actual == expected
+
+    # def test_get_words_in_text_with_punctuation(self):
+    #     text = 'Hello, world!!!!! It, - winter...'
+    #     actual = get_words_in_text(text)
+    #     print(actual)
+    #     expected = ['hello', 'world', 'it', 'winter']
+    #
+    #     assert actual == expected
 
 
 class TestInitialForm:

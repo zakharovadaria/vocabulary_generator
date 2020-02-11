@@ -1,3 +1,4 @@
+import re
 from collections import Counter
 from typing import List
 
@@ -6,14 +7,17 @@ from nltk.corpus import wordnet
 import nltk
 
 
-def get_all_words_in_text(text: str) -> List[str]:
-    text_without_spaces_around = text.strip()
-    if not text_without_spaces_around:
-        return []
+def get_clear_text(text: str) -> str:
+    text_without_punctuation = re.sub(r"[^\w\s]", "", text)
+    text_without_space_around = text_without_punctuation.strip()
+    text_with_one_spaces = re.sub(r" +", " ", text_without_space_around)
+    return text_with_one_spaces
 
-    words = text_without_spaces_around.lower().split(' ')
 
-    return words
+def get_words_in_text(text: str) -> List[str]:
+    words = get_clear_text(text).lower().split(' ')
+    filtered_words = list(filter(lambda word: word, words))
+    return filtered_words
 
 
 def get_initial_form(word: str) -> str:
@@ -49,7 +53,7 @@ def get_words_frequency(words: List[str], *, most_common: int = None) -> dict:
 
 
 def get_unknown_words(text: str, known_words: List[str]) -> List[str]:
-    words = get_all_words_in_text(text)
+    words = get_words_in_text(text)
     words_in_initial_form = get_words_in_initial_form(words)
     known_words_in_initial_form = get_words_in_initial_form(known_words)
     unknown_words = []
