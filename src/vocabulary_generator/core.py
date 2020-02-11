@@ -7,17 +7,9 @@ from nltk.corpus import wordnet
 import nltk
 
 
-def get_clear_text(text: str) -> str:
-    text_without_punctuation = re.sub(r"[^\w\s]", "", text)
-    text_without_space_around = text_without_punctuation.strip()
-    text_with_one_spaces = re.sub(r" +", " ", text_without_space_around)
-    return text_with_one_spaces
-
-
 def get_words_in_text(text: str) -> List[str]:
-    words = get_clear_text(text).lower().split(' ')
-    filtered_words = list(filter(lambda word: word, words))
-    return filtered_words
+    words = re.findall(r"\b(\w+)\b", text.lower())
+    return words
 
 
 def get_initial_form(word: str) -> str:
