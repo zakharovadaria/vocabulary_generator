@@ -26,7 +26,7 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     install_requires=[
-        "nltk==3.4.5"
+        "nltk==3.9"
     ],
     extras_require={
         "dev": [
